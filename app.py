@@ -27,9 +27,6 @@ class App:
         )
 
     def init_whisper(self):
-        # Temporal fix of the issue : https://github.com/jhj0517/Whisper-WebUI/issues/144
-        os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
-
         whisper_type = self.args.whisper_type.lower().strip()
 
         if whisper_type in ["faster_whisper", "faster-whisper", "fasterwhisper"]:
@@ -106,7 +103,7 @@ class App:
                         nb_best_of = gr.Number(label="Best Of", value=5, interactive=True)
                         nb_patience = gr.Number(label="Patience", value=1, interactive=True)
                         cb_condition_on_previous_text = gr.Checkbox(label="Condition On Previous Text", value=True, interactive=True)
-                        tb_initial_prompt = gr.Textbox(label="Initial Prompt", value=None, interactive=True)
+                        tb_initial_prompt = gr.Textbox(label="Initial Prompt", value="", interactive=True)
                         sd_temperature = gr.Slider(label="Temperature", value=0, step=0.01, maximum=1.0, interactive=True)
                         nb_compression_ratio_threshold = gr.Number(label="Compression Ratio Threshold", value=2.4, interactive=True)
                     with gr.Accordion("VAD", open=False):
@@ -192,7 +189,7 @@ class App:
                         nb_best_of = gr.Number(label="Best Of", value=5, interactive=True)
                         nb_patience = gr.Number(label="Patience", value=1, interactive=True)
                         cb_condition_on_previous_text = gr.Checkbox(label="Condition On Previous Text", value=True, interactive=True)
-                        tb_initial_prompt = gr.Textbox(label="Initial Prompt", value=None, interactive=True)
+                        tb_initial_prompt = gr.Textbox(label="Initial Prompt", value="", interactive=True)
                         sd_temperature = gr.Slider(label="Temperature", value=0, step=0.01, maximum=1.0, interactive=True)
                         nb_compression_ratio_threshold = gr.Number(label="Compression Ratio Threshold", value=2.4, interactive=True)
                     with gr.Accordion("VAD", open=False):
@@ -272,7 +269,7 @@ class App:
                         nb_best_of = gr.Number(label="Best Of", value=5, interactive=True)
                         nb_patience = gr.Number(label="Patience", value=1, interactive=True)
                         cb_condition_on_previous_text = gr.Checkbox(label="Condition On Previous Text", value=True, interactive=True)
-                        tb_initial_prompt = gr.Textbox(label="Initial Prompt", value=None, interactive=True)
+                        tb_initial_prompt = gr.Textbox(label="Initial Prompt", value="", interactive=True)
                         sd_temperature = gr.Slider(label="Temperature", value=0, step=0.01, maximum=1.0, interactive=True)
                     with gr.Accordion("VAD", open=False):
                         cb_vad_filter = gr.Checkbox(label="Enable Silero VAD Filter", value=False, interactive=True)
@@ -410,7 +407,11 @@ class App:
             launch_args['root_path'] = self.args.root_path
         launch_args['inbrowser'] = True
 
-        self.app.queue(api_open=False).launch(**launch_args)
+        queue_args = {}
+        if self.args.api_open:
+            queue_args["api_open"] = self.args.api_open
+
+        self.app.queue(**queue_args).launch(**launch_args)
 
 
 # Create the parser for command-line arguments
