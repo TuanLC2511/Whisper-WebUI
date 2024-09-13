@@ -269,7 +269,7 @@ class WhisperBase(ABC):
                 output_dir=self.output_dir
             )
 
-            result_str = f"Done in {self.format_time(time_for_task)}! Subtitle file is in the outputs folder.\n\n{subtitle}"
+            result_str = f"{subtitle}"
             return [result_str, result_file_path]
         except Exception as e:
             print(f"Error transcribing file: {e}")
@@ -329,7 +329,7 @@ class WhisperBase(ABC):
                 file_format=file_format,
                 output_dir=self.output_dir
             )
-            result_str = f"Done in {self.format_time(time_for_task)}! Subtitle file is in the outputs folder.\n\n{subtitle}"
+            result_str = f"{subtitle}"
 
             return [result_str, result_file_path]
 
